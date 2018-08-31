@@ -11,7 +11,7 @@ import Carbon from '../components/Carbon'
 import { DEFAULT_CODE, DEFAULT_SETTINGS } from '../lib/constants'
 import { getQueryStringState } from '../lib/routing'
 
-const isInIFrame = morph.get('parent.window.parent')
+const iFrame = morph.get('parent.window.parent')
 
 const Page = props => (
   <React.Fragment>
@@ -61,10 +61,10 @@ class Embed extends React.Component {
   updateCode = code => {
     this.setState({ code })
 
-    if (isInIFrame(window)) {
-      window.parent.window.parent.postMessage(
+    if (iFrame(window)) {
+      iFrame.postMessage(
         {
-          id: this.state.id || 'carbon',
+          id: this.state.id ? `carbon:${this.state.id}` : 'carbon',
           code
         },
         '*'
